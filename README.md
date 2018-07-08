@@ -21,7 +21,7 @@ and
 bash npm run db:seed:all
 ```
 
-The run 
+Then run 
 ```bash
 npm run start
 ```
