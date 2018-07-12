@@ -17,79 +17,73 @@ const commonLimiter = limiter({
 router.post(
     '/signup', 
     commonLimiter,
-    function(req, res) {
+    async function(req, res) {
         const dbInstance = db();
         const { username, password } = req.body;
-        const user = dbInstance.User.findOne({
+        const user = await dbInstance.User.findOne({
             where: {
                 username
             }
         });
-        user.then(user => {
-            if (user) {
-                res.send(409, 'User already exists');
-            } else {
-                crypto.randomBytes(48, function(err, buffer) {
-                    dbInstance.User.create({
-                        username,
-                        password,
-                        signUpToken: buffer.toString('hex')
-                    });
-                    res.send(200);
+        if (user) {
+            res.send(409, 'User already exists');
+        } else {
+            crypto.randomBytes(48, function(err, buffer) {
+                dbInstance.User.create({
+                    username,
+                    password,
+                    signUpToken: buffer.toString('hex')
                 });
-            }
-        });
+                res.send(200);
+            });
+        }
     }
 );
 
 router.get(
     '/verify/:token',
     commonLimiter,
-    function(req, res) {
+    async function(req, res) {
         const dbInstance = db();
-        const user = dbInstance.User.findOne({
+        const user = await dbInstance.User.findOne({
             where: {
                 signUpToken: req.params.token
             }
         });
-        user.then(async (user) => {
-            if (user) {
-                await user.update({
-                    verified: true,
-                    signUpToken: null
-                });
-                res.send(200);
-            } else {
-                res.send(401);
-            }
-        });
+        if (user) {
+            await user.update({
+                verified: true,
+                signUpToken: null
+            });
+            res.send(200);
+        } else {
+            res.send(401);
+        }
     }
 );
 
 router.post(
     '/login', 
     commonLimiter, 
-    function(req, res) {
+    async function(req, res) {
         const dbInstance = db();
         const { username, password } = req.body;
-        const user = dbInstance.User.findOne({
+        const user = await dbInstance.User.findOne({
             where: {
                 username,
                 verified: true
             }
         });
-        user.then(user => {
-            if (user && user.comparePassword(password)) {
-                const token = jwt.sign({
-                    id: user.id,
-                    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
-                    sub: user.id
-                }, process.env.JWT_SECRET || 'my_secret_jwt');
-                res.send({token});
-            } else {
-                res.send(401);
-            }
-        });
+        if (user && user.comparePassword(password)) {
+            const token = jwt.sign({
+                id: user.id,
+                exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+                sub: user.id
+            }, process.env.JWT_SECRET || 'my_secret_jwt');
+            res.send({token});
+        } else {
+            res.send(401);
+        }
     });
 
 router.post(
