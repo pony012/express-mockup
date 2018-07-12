@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         verified: DataTypes.BOOLEAN,
         signUpToken: DataTypes.STRING
     }, {});
-    User.associate = function(/* models */) {
-    // associations can be defined here
+    User.associate = function(models) {
+        User.hasMany(models.Ticket);
     };
     User.beforeCreate((user) => {
         const hash = bcrypt.hashSync(user.password, 10);

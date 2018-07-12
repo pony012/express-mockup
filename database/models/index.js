@@ -1,5 +1,6 @@
 'use strict';
 
+require('dotenv').config();
 const fs        = require('fs');
 const path      = require('path');
 const Sequelize = require('sequelize');
@@ -30,6 +31,12 @@ Object.keys(db).forEach(modelName => {
         db[modelName].associate(db);
     }
 });
+
+if (process.env.INIT_DB) {
+    sequelize.sync({force: true}).then(() => {
+        process.exit(0);
+    });
+}
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

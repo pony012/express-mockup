@@ -7,8 +7,7 @@ const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 
 const indexRouter = require('./routes/index');
-const apiRouter = require('./routes/api');
-const usersRouter = require('./routes/api/users');
+const { common, users } = require('./routes/api');
 
 const app = express();
 
@@ -29,8 +28,8 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api', apiRouter);
-app.use('/api/users', usersRouter);
+app.use('/api', common);
+app.use('/api/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

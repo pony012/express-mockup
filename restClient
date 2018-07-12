@@ -11,7 +11,7 @@ User-Agent: vscode-restclient
 
 ###### Verify
 
-GET http://localhost:3000/api/verify/ab8ebf3ec0e6fc0b07e133229c54f718eebef1209c88cf67e32ef29a0cb7da27ae227c6910db87df2a87423679fe9dcc
+GET http://localhost:3000/api/verify/2fa2a4f1d6260634ed6d1135c38c0f6d5f7b9fbaf881f9a4b2c2926a1f3887b2f51ec9ec004373315c6a6605d16e5dcd
 content-type: application/json
 User-Agent: vscode-restclient
 
@@ -22,7 +22,7 @@ content-type: application/json
 User-Agent: vscode-restclient
 
 {
-    "username": "alan2",
+    "username": "alan",
     "password": "password"
 }
 
@@ -31,13 +31,22 @@ User-Agent: vscode-restclient
 GET http://localhost:3000/api/users/1
 content-type: application/json
 User-Agent: vscode-restclient
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTMxOTc1MTEyLCJzdWIiOjEsImlhdCI6MTUzMTM3MDMxMn0.uNvYfHSAiIYkvby97hgG9-0X36rLKnVHTFbUP4nq084
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTMyMDEyNTkzLCJzdWIiOjEsImlhdCI6MTUzMTQwNzc5M30.cUjbK1nj63NnCGlmym7tQP5sggGtR0TJH1h91L16-tM
 
 ########
 
 POST http://localhost:3000/api/logout
 content-type: application/json
 User-Agent: vscode-restclient
-Authorization: Bearer eyJhbGciiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTMxOTczNzU3LCJzdWIiOjEsImlhdCI6MTUzMTM2ODk1N30.BZgs_YPu8Ws-OI6UqENM-orC7YFRWsjgtV_cDuxq51c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTMyMDExNzY0LCJzdWIiOjEsImlhdCI6MTUzMTQwNjk2NH0.L3ZXDEKIF8c6ssMZpL08L4TfCsZElXeQ1vjt3UKw8mo
 
-########
+######## CREATE TICKET
+
+POST http://localhost:3000/api/users/1/tickets
+content-type: application/json
+User-Agent: vscode-restclient
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTMyMDEyNTkzLCJzdWIiOjEsImlhdCI6MTUzMTQwNzc5M30.cUjbK1nj63NnCGlmym7tQP5sggGtR0TJH1h91L16-tM
+
+{
+    "price": "700"
+}
