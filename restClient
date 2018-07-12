@@ -1,3 +1,20 @@
+######SignUp
+
+POST http://localhost:3000/api/signUp
+content-type: application/json
+User-Agent: vscode-restclient
+
+{
+    "username": "alan2",
+    "password": "password"
+}
+
+###### Verify
+
+GET http://localhost:3000/api/verify/ab8ebf3ec0e6fc0b07e133229c54f718eebef1209c88cf67e32ef29a0cb7da27ae227c6910db87df2a87423679fe9dcc
+content-type: application/json
+User-Agent: vscode-restclient
+
 ###### Login
 
 POST http://localhost:3000/api/login
@@ -5,7 +22,7 @@ content-type: application/json
 User-Agent: vscode-restclient
 
 {
-    "username": "alan",
+    "username": "alan2",
     "password": "password"
 }
 
@@ -14,7 +31,7 @@ User-Agent: vscode-restclient
 GET http://localhost:3000/api/users/1
 content-type: application/json
 User-Agent: vscode-restclient
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTMxOTczNzU3LCJzdWIiOjEsImlhdCI6MTUzMTM2ODk1N30.BZgs_YPu8Ws-OI6UqENM-orC7YFRWsjgtV_cDuxq51c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxNTMxOTc1MTEyLCJzdWIiOjEsImlhdCI6MTUzMTM3MDMxMn0.uNvYfHSAiIYkvby97hgG9-0X36rLKnVHTFbUP4nq084
 
 ########
 

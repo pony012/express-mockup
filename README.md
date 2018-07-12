@@ -16,11 +16,16 @@ Go to ```./database``` and then
 
 Run 
 ```bash 
-npm run db:migrate
+../node_modules/.bin/sequelize run db:migrate:undo
+```
+
+Run 
+```bash 
+../node_modules/.bin/sequelize run db:migrate
 ```
 and 
-```
-bash npm run db:seed:all
+```bash 
+../node_modules/.bin/sequelize run db:seed:all
 ```
 
 Then run 

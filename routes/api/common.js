@@ -6,19 +6,76 @@ const jwtMiddleware = require('express-jwt');
 const blacklist = require('express-jwt-blacklist');
 const client = require('redis').createClient();
 const limiter = require('express-limiter')(router, client);
+const crypto = require('crypto');
+
+const commonLimiter = limiter({
+    lookup: 'connection.remoteAddress',
+    total: 10,
+    expire: 1000 * 60
+});
 
 router.post(
-    '/login', 
-    limiter({
-        lookup: 'connection.remoteAddress',
-        total: 10,
-        expire: 1000 * 60
-    }), function(req, res) {
+    '/signup', 
+    commonLimiter,
+    function(req, res) {
         const dbInstance = db();
         const { username, password } = req.body;
         const user = dbInstance.User.findOne({
             where: {
                 username
+            }
+        });
+        user.then(user => {
+            if (user) {
+                res.send(409, 'User already exists');
+            } else {
+                crypto.randomBytes(48, function(err, buffer) {
+                    dbInstance.User.create({
+                        username,
+                        password,
+                        signUpToken: buffer.toString('hex')
+                    });
+                    res.send(200);
+                });
+            }
+        });
+    }
+);
+
+router.get(
+    '/verify/:token',
+    commonLimiter,
+    function(req, res) {
+        const dbInstance = db();
+        const user = dbInstance.User.findOne({
+            where: {
+                signUpToken: req.params.token
+            }
+        });
+        user.then(async (user) => {
+            if (user) {
+                await user.update({
+                    verified: true,
+                    signUpToken: null
+                });
+                res.send(200);
+            } else {
+                res.send(401);
+            }
+        });
+    }
+);
+
+router.post(
+    '/login', 
+    commonLimiter, 
+    function(req, res) {
+        const dbInstance = db();
+        const { username, password } = req.body;
+        const user = dbInstance.User.findOne({
+            where: {
+                username,
+                verified: true
             }
         });
         user.then(user => {
@@ -37,11 +94,7 @@ router.post(
 
 router.post(
     '/logout',
-    limiter({
-        lookup: 'connection.remoteAddress',
-        total: 10,
-        expire: 1000 * 60
-    }), 
+    commonLimiter, 
     jwtMiddleware({
         secret: process.env.JWT_SECRET || 'my_secret_jwt',
         isRevoked: blacklist.isRevoked

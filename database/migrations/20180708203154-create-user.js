@@ -20,6 +20,15 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.STRING,
             },
+            verified: {
+                allowNull: false,
+                type: Sequelize.BOOLEAN,
+                defaultValue: false
+            },
+            signUpToken: {
+                allowNull: true,
+                type: Sequelize.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
