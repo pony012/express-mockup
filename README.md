@@ -12,6 +12,16 @@ sudo docker run --name express-mockup-redis -p 6379:6379 -d redis
 
 Copy the `.env.example` to `.env` file and configure.
 
+---
+
+Run
+
+```bash
+npm run db:init
+```
+
+OR
+
 Go to ```./database``` and then
 
 Run 
@@ -27,6 +37,8 @@ and
 ```bash 
 ../node_modules/.bin/sequelize run db:seed:all
 ```
+
+---
 
 Then run 
 ```bash
